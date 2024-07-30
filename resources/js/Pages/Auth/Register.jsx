@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Guest from '@/Layouts/GuestLayout';
+import { useState } from 'react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -11,7 +12,24 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        avatar: '',
     });
+
+    const [previewUrl, setPreviewUrl] = useState('');
+  
+    const handleImageChange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        let img = e.target.files[0];
+        // Create a local URL for the file
+        let localUrl = URL.createObjectURL(img);
+        // Update the state with the new file and the local URL for preview
+        setData(prevState => ({
+          ...prevState,
+          avatar: img
+        }));
+        setPreviewUrl(localUrl);
+      }
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -93,6 +111,22 @@ export default function Register() {
                         />
 
                         <InputError message={errors.password_confirmation} className="mt-2" />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="avatar">Avatar</InputLabel>
+                        <TextInput
+                            id="avatar"
+                            type="file"
+                            name="avatar"
+                            className="mt-1 block w-full"
+                            onChange={handleImageChange}
+                            required
+                        />
+                        <InputError message={errors.avatar} className="mt-2" />
+                        {previewUrl && (
+                            <img className='max-w-[200px] max-h-[200px]' src={previewUrl} alt="Preview" />
+                        )}
                     </div>
 
                     <div className="flex items-center justify-end mt-4">

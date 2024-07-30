@@ -11,11 +11,36 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#111828"
+            main: "hsl(222,40%,11%)",
+            button: 'hsl(211,89%,51%)'
         },
         secondary: {
-            main: "#202938"
+            main: "hsl(222,40%,21%)",
+            button: 'hsl(211,100%,20%)',
+            text: "white",
+        },
+        tertiary: {
+            main: "hsl(222,40%,25%)",
+            text: "white"
         }
+
+    },
+    typography: {
+        allVariants: {
+            color: 'white'
+        },
+        h1: {
+            fontSize: "2.5rem",
+            fontWeight: 600
+        },
+        h2: {
+            fontSize: "1.75rem",
+            fontWeight: 600
+        },
+        h1: {
+            fontSize: "1.5rem",
+            fontWeight: 600
+        },
     },
 
     components: {
@@ -48,7 +73,7 @@ createInertiaApp({
 
         root.render(
             <ThemeProvider theme={theme}>
-                    <App  style={{ height: '100vh' }} {...props} />
+                <App style={{ height: '100vh' }} {...props} />
             </ThemeProvider>
         );
     },

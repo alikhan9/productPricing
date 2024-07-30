@@ -1,13 +1,13 @@
 import { router } from "@inertiajs/react";
 import { Link } from "@mui/material";
 
-export default function NavLink({ href, children, method = 'get' }) {
+export default function NavLink({ href, children, method = 'get', hover = true }) {
 
     const goTo = () => {
-        router.visit(href, {method: method});
+        router.visit(href, { method: method });
     };
 
     return (
-        <Link color="inherit" onClick={goTo}>{children}</Link>
+        <Link sx={{ "&:hover": hover ? {} : { color: "inherit" },display:'flex',gap:1, alignItems:'center' }} color="inherit" onClick={goTo}>{children}</Link>
     );
 }
