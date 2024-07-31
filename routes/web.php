@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,12 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Home');
     })->name('home');
 
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+
+    Route::get('/stores',[StoreController::class,'index'])->name('stores.index');
+    Route::post('/stores',[StoreController::class,'store'])->name('stores.store');
 
 });
 

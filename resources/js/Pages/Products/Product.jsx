@@ -29,7 +29,7 @@ export default function Product({ product }) {
             <EditProduct product={product} open={openEdit} handleClose={handleClose} />
             <Box onMouseOver={() => showDetails()}
                 onMouseOut={() => hideDetails()}
-                sx={{ width: 100, position: 'relative', bgcolor: 'tertiary.main', borderRadius: 3, overflow: 'hidden' }}>
+                sx={{ width: 100, height: 140, position: 'relative', bgcolor: 'tertiary.main', borderRadius: 3, overflow: 'hidden' }}>
 
                 {show &&
                     <Backdrop open={open}
@@ -37,9 +37,10 @@ export default function Product({ product }) {
                         <Button variant='contained' onClick={() => handleOpen()}><ModeEditIcon /></Button>
                     </Backdrop>
                 }
-                <img src={product.image} alt="image" />
-                <Typography sx={{ textAlign: 'center', p: 1 }}>{product.name}</Typography>
-                <Typography>{product.description}</Typography>
+                <Box sx={{ height: 100 }}>
+                    <img src={product.image} alt="image" />
+                </Box>
+                <Typography sx={{ textAlign: 'center', p: 1, fontSize: 10 }}>{product.name}</Typography>
             </Box >
         </div>
     )

@@ -13,6 +13,7 @@ class StoreProducts extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
+
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class);

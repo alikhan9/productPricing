@@ -21,7 +21,8 @@ const theme = createTheme({
         },
         tertiary: {
             main: "hsl(222,40%,25%)",
-            text: "white"
+            text: "white",
+            hover: "hsl(222,40%,30%)"
         }
 
     },

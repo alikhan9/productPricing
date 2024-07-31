@@ -4,13 +4,13 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { TextField } from '@mui/material';
-import TextInput from './TextInput';
-import InputLabel from './InputLabel';
 import { useForm } from '@inertiajs/react';
 import CloseIcon from '@mui/icons-material/Close';
-import InputError from './InputError';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import PrimaryButton from './PrimaryButton';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
+import InputError from '@/Components/InputError';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 
 
@@ -30,7 +30,6 @@ export default function CreateProduct() {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
-        description: '',
         image: null,
     });
 
@@ -44,9 +43,13 @@ export default function CreateProduct() {
 
     const submit = (e) => {
         e.preventDefault();
-        
+
         post(route('products.store'), {
-            onSuccess: () => handleClose(),
+            onSuccess: () => {
+                handleClose();
+                reset();
+                setPreviewUrl('');
+            },
         });
     };
 
@@ -100,20 +103,6 @@ export default function CreateProduct() {
                             />
 
                             <InputError message={errors.name} className="mt-2" />
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="description" value="Description (optionnelle)" />
-                            <TextInput
-                                id="description"
-                                type="text"
-                                name="description"
-                                value={data.description}
-                                className="mt-1 block w-full"
-                                autoComplete="description"
-                                onChange={(e) => setData('description', e.target.value)}
-                            />
-
-                            <InputError message={errors.description} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="image">Image</InputLabel>

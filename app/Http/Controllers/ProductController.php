@@ -24,18 +24,14 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:6000',
-            'description' => 'nullable|string|max:500',
         ], [
             'name.required' => 'Le nom est requis.',
             'name.string' => 'Le nom doit être une chaîne de caractères.',
             'name.max' => 'Le nom ne peut pas dépasser :max caractères.',
-
             'image.required' => 'Une image est requise.',
             'image.image' => 'Le fichier fourni n\'est pas une image valide.',
             'image.mimes' => "Veuillez fournir une image d'un type valide (jpeg, png, jpg, gif, svg).",
             'image.max' => 'L\'image ne peut pas dépasser :max kilo-octets.',
-
-            'description.max' => 'La description ne peut pas dépasser :max caractères.',
         ]);
 
         $manager = new ImageManager(new Driver());
@@ -43,8 +39,7 @@ class ProductController extends Controller
 
         $filename = uniqid() . '.webp';
 
-        $image->scale(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
-
+        $image->contain(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
 
         $image = '/storage/images/products/' . $filename;
 
@@ -55,10 +50,10 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+//        dd($request);
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:6000',
-            'description' => 'string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:6000',
         ], [
             'name.required' => 'Le nom est requis.',
             'name.string' => 'Le nom doit être une chaîne de caractères.',
@@ -68,7 +63,6 @@ class ProductController extends Controller
             'image.mimes' => "Veuillez fournir une image d'un type valide (jpeg, png, jpg, gif, svg).",
             'image.max' => 'L\'image ne peut pas dépasser :max kilo-octets.',
 
-            'description.max' => 'La description ne peut pas dépasser :max caractères.',
         ]);
 
         if($data['image']){

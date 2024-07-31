@@ -1,13 +1,10 @@
-import Product from '@/Components/Product';
-import styled from '@emotion/styled';
 import { Head } from '@inertiajs/react';
-import { Box, Grid, Paper, Typography } from '@mui/material';
-import CreateProduct from '@/Components/CreateProduct';
+import { Box, Typography } from '@mui/material';
+import Product from './Products/Product';
+import CreateProduct from './Products/CreateProduct';
 
 
-export default function Products({ products }) {
-
-
+export default function Index({ products }) {
     return (
         <Box sx={{ py: 4, }}>
             <Head title="Dashboard" />
@@ -16,12 +13,11 @@ export default function Products({ products }) {
                 <CreateProduct />
             </Box>
 
-            <Box sx={{ display: 'flex', gap:2 }}>
+            <Box sx={{ display: 'flex', gap: 2 }}>
                 {products.map((p, index) => {
                     return <Product key={index} product={p} />
                 })}
             </Box>
         </Box>
-
     );
 }
