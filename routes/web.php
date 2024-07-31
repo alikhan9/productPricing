@@ -18,7 +18,9 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Home');
     })->name('home');
 
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
 });
 

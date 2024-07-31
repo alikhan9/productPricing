@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { TextField } from '@mui/material';
 import TextInput from './TextInput';
 import InputLabel from './InputLabel';
 import { useForm } from '@inertiajs/react';
@@ -11,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InputError from './InputError';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import PrimaryButton from './PrimaryButton';
+import axios from 'axios';
 
 
 
@@ -26,28 +25,21 @@ const style = {
     borderRadius: 2
 };
 
-export default function CreateProduct() {
+export default function EditProduct({ product, open, handleClose }) {
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        description: '',
-        image: null,
-    });
+    const { data, setData, put, processing, errors, reset } = useForm({ id: product.id, name: product.name, description: product.description ? product.description : '', image: null });
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const [parent, enableAnimations] = useAutoAnimate()
+    const [parent] = useAutoAnimate()
     const [previewUrl, setPreviewUrl] = useState('');
-
-
     const submit = (e) => {
         e.preventDefault();
-        
-        post(route('products.store'), {
-            onSuccess: () => handleClose(),
-        });
+
+        // put(`/products/${product.id}`, {
+        //     onSuccess: () => handleClose(),
+        //     data: {...data}
+        // });
+        console.log(data);
+        axios.put(`/products/${product.id}`, { ...data })
     };
 
     const handleImageChange = (e) => {
@@ -56,23 +48,13 @@ export default function CreateProduct() {
             // Create a local URL for the file
             let localUrl = URL.createObjectURL(img);
             // Update the state with the new file and the local URL for preview
-            setData(prevState => ({
-                ...prevState,
-                image: img
-            }));
+            setData('image', e.target.files[0])
             setPreviewUrl(localUrl);
         }
     };
 
     return (
         <div ref={parent}>
-            <Box onClick={handleOpen} sx={{
-                display: 'flex', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
-            }}>
-                <Typography>Créer Produit</Typography>
-                <AddBoxIcon sx={{ fontSize: 40, color: 'white' }} />
-            </Box>
-
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -124,13 +106,10 @@ export default function CreateProduct() {
                                 name="image"
                                 className="mt-1 block w-full"
                                 onChange={handleImageChange}
-                                required
                             />
                             <InputError message={errors.image} className="mt-2" />
                             <div className='flex justify-center mt-2'>
-                                {previewUrl && (
-                                    <img className='max-w-[200px] max-h-[200px]' src={previewUrl} alt="Preview" />
-                                )}
+                                <img className='max-w-[200px] max-h-[200px]' src={previewUrl ? previewUrl : product.image} alt="Preview" />
                             </div>
                         </div>
                         <Box sx={{ display: 'flex', justifyContent: 'end', mt: 2 }}>

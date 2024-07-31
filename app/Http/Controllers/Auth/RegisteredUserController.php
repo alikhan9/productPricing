@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10000',
         ]);
 
         $manager = new ImageManager(new Driver());
@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
         $filename = uniqid() . '.webp';
 
-        $image->scale(400)->toWebp()->save(storage_path('app/public/images/avatars/' . $filename));
+        $image->scale(250,250)->toWebp()->save(storage_path('app/public/images/avatars/' . $filename));
 
 
         $avatar = '/storage/images/avatars/' . $filename;
