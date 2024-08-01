@@ -6,7 +6,6 @@ import Store from './Stores/Store';
 
 export default function Stores({ stores }) {
 
-    console.log(stores);
     return (
         <Box sx={{ py: 4, }}>
             <Head title="Magasin" />

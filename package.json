@@ -24,6 +24,7 @@
         "@emotion/styled": "^11.13.0",
         "@formkit/auto-animate": "^0.8.2",
         "@mui/icons-material": "^5.16.5",
-        "@mui/material": "^5.16.5"
+        "@mui/material": "^5.16.5",
+        "@react-spring/web": "^9.7.4"
     }
 }

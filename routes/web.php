@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/stores',[StoreController::class,'index'])->name('stores.index');
     Route::post('/stores',[StoreController::class,'store'])->name('stores.store');
+    Route::delete('/stores/{store}',[StoreController::class,'destroy'])->name('stores.destroy');
 
 });
 
