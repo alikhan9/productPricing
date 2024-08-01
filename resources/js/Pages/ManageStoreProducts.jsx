@@ -1,17 +1,18 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react'
+import { Box, Button, Input, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import React, { useState } from 'react'
 import ManageProduct from './ManageStoreProducts/ManageProduct';
 import { router } from '@inertiajs/react';
+import HandleStoreProduct from './ManageStoreProducts/HandleStoreProduct';
 
-export default function ManageStoreProducts({ store, products, availableProducts }) {
+export default function ManageStoreProducts({ store, products, storeProducts }) {
 
-    console.log(products);
+    const handleChange = (valueStoreProducts) => {
+        router.get(`/stores/${store.id}/products`, { storeProducts: valueStoreProducts ? 1 : 0 }, {
+            preserveState: true
+        });
+    };
 
-    const isProductPartOfStore = (productId) => {
-        if (products.filter(p => p.product_id === productId).length > 0)
-            return true;
-        return false;
-    }
+
 
     const addProductToStore = (productId, price) => {
         router.post(`/stores/${store.id}/products/${productId}`, { price });
@@ -23,7 +24,34 @@ export default function ManageStoreProducts({ store, products, availableProducts
 
     return (
         <Box sx={{ mt: 2 }}>
-            <Typography variant='h3'>{store.name} / {store.city} / {store.address} / Produits</Typography>
+            <Typography variant='h3'>{store.name} / {store.city} / {store.address}
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'end', gap: 1 }}>
+                <Button variant='contained' color='success' onClick={() => handleChange(true)} sx={{ opacity: storeProducts ? 1 : .25 }} >Produits Magazin</Button>
+                <Button onClick={() => handleChange(false)} variant='contained' color='secondary' sx={{ opacity: !storeProducts ? 1 : .25 }} >Produits Généraux</Button>
+            </Box>
+
+
+            <TextField variant='filled' sx={{ float: 'right', my: 2, color: 'white' }} color='warning' size='small' label="Rechercher..."  />
+
+            <Box
+                component="form"
+                sx={{
+                    '& > :not(style)': { m: 1, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
+            >
+                <TextField label="Outlined secondary" color="secondary" focused disableUnderline />
+                <TextField label="Filled success" variant="filled" color="success" focused />
+                <TextField
+                    label="Standard warning"
+                    variant="standard"
+                    color="warning"
+                    focused
+                />
+            </Box>
+
 
 
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', mt: 2, position: 'relative', bgcolor: 'tertiary.main', overflow: 'hidden', "&>*": { width: '100%', display: 'flex', p: 2, justifyContent: 'center', border: 1 } }}>
@@ -32,12 +60,19 @@ export default function ManageStoreProducts({ store, products, availableProducts
                 <Typography>Prix</Typography>
                 <Typography>Status</Typography>
             </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                {availableProducts.map((p, index) => {
-                    return <ManageProduct removeProductFromStore={removeProductFromStore} addProductToStore={addProductToStore} key={index} isProductPartOfStore={isProductPartOfStore} product={p} />
-                })}
-            </Box>
+            {!storeProducts ?
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    {products.map((p, index) => {
+                        return <ManageProduct removeProductFromStore={removeProductFromStore} addProductToStore={addProductToStore} key={index} product={p} />
+                    })}
+                </Box>
+                :
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    {products.map((p, index) => {
+                        return <HandleStoreProduct removeProductFromStore={removeProductFromStore} key={index} storeProduct={p} />
+                    })}
+                </Box>
+            }
         </Box>
     )
 }

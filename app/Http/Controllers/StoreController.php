@@ -56,16 +56,25 @@ class StoreController extends Controller
         return back();
     }
 
-    public function manageProducts(Store $store)
+    public function manageProducts(Request $request, Store $store)
     {
+        $request->validate([
+            'storeProducts' => 'boolean'
+        ]);
         $notInIds = $store->products()->pluck('product_id')->toArray();
 
         $availableProducts = Product::whereNotIn('id', $notInIds)->get();
 
+        $storeProduct = true;
+
+        if($request->has('storeProducts')){
+            $storeProduct = $request->storeProducts;
+        }
+
         return Inertia::render('ManageStoreProducts', [
             'store' => $store,
-            'products' => $store->products()->get(),
-            'availableProducts' => $availableProducts,
+            'products' => $storeProduct ? $store->products()->get() : $availableProducts,
+            'storeProducts' => (boolean)$storeProduct
         ]);
     }
 

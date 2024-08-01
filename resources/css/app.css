@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global.css */
+.MuiInput-underline:after,
+.MuiInput-underline:before {
+  border: none !important;
+}
 
-
-.productHeaders.productHeaders {
-    color: 'red';
-    background: 'blue';
+.MuiInputBase-input:focus {
+  border-color: transparent !important;
 }

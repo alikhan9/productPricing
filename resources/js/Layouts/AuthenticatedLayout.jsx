@@ -46,8 +46,8 @@ export default function Authenticated({ children }) {
                         <NavLink href='/' method='get'>Home</NavLink>
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2 }}>
-                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} />Stores</NavLink>
-                        <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} />Products</NavLink>
+                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} />Magazins</NavLink>
+                        <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} />Produits</NavLink>
                         <Button
                             id="basic-button"
                             aria-controls={open ? 'basic-menu' : undefined}
@@ -80,7 +80,7 @@ export default function Authenticated({ children }) {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Container sx={{ height: '100%' }}>
+            <Container sx={{ mb:5 }}>
                 {children}
             </Container>
         </Box>

@@ -8,6 +8,6 @@ export default function NavLink({ href, children, method = 'get', hover = true }
     };
 
     return (
-        <Link sx={{ "&:hover": hover ? {} : { color: "inherit" },display:'flex',gap:1, alignItems:'center' }} color="inherit" onClick={goTo}>{children}</Link>
+        <Link sx={{ "&:hover": hover ? {} : { color: "inherit" }, display: 'flex', gap: 1, alignItems: 'center' }} color="inherit" onClick={goTo}>{children}</Link>
     );
 }

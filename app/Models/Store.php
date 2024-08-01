@@ -15,7 +15,7 @@ class Store extends Model
 
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(StoreProducts::class,'store_id','id');
+        return $this->hasMany(StoreProducts::class,'store_id','id')->with('product');
     }
 
     public function removeProduct(Product $product){

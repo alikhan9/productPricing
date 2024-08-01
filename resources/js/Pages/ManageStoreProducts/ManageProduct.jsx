@@ -40,13 +40,8 @@ export default function ManageProduct({ product, isProductPartOfStore, addProduc
             <animated.div style={springProps}>
                 <input placeholder='Prix' onChange={(e) => setPrice(e.target.value)} type='number' min="0" className='px-2 py-1 text-white focus:ring-0 text-center bg-transparent border-white  border-t-0 border-r-0 border-l-0 border-b'></input>
             </animated.div>
-
             <Box>
-                {!isProductPartOfStore(product.id) ?
-                    <Button onClick={() => tryToStoreProduct()} variant="contained" color='success'>Ajouter</Button>
-                    :
-                    <Button onClick={() => removeProductFromStore(product.id)} variant="outlined" color='warning'>Retirer</Button>
-                }
+                <Button onClick={() => tryToStoreProduct()} variant="contained" color='success'>Ajouter</Button>
             </Box>
         </Box >
     )
