@@ -13,4 +13,8 @@ class Product extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
+    public function isPartOfStore(Store $store){
+        return StoreProducts::where('store_id',$store->id)->where('product_id',$this->id)->exists();
+    }
+
 }

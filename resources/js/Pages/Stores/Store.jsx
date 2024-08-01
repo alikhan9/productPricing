@@ -37,6 +37,10 @@ export default function Store({ store }) {
         })
     }
 
+    const goToManageProducts = () => {
+        router.get(`/stores/${store.id}/products`)
+    }
+
     return (
         <Box sx={{ width: '100%', display: 'flex', position: 'relative', bgcolor: 'tertiary.main', overflow: 'hidden', "&>*": { width: '100%', display: 'flex', p: 1, height: 120, justifyContent: 'center', alignItems: 'center', border: 1, borderColor: 'white' } }}>
             <Typography>{store.name}</Typography>
@@ -45,6 +49,9 @@ export default function Store({ store }) {
             </Box>
             <Typography> {store.city}</Typography>
             <Typography> {store.address}</Typography>
+            <Box>
+                <Button onClick={() => goToManageProducts()} variant='outlined' color='success'>Produits</Button>
+            </Box>
             <Box>
                 <Button variant='outlined' color='info'>Modifier</Button>
             </Box>

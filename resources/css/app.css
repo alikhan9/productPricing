@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.productHeaders.productHeaders {
+    color: 'red';
+    background: 'blue';
+}

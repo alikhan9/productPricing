@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Models\Store;
+use App\Models\StoreProducts;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -38,7 +41,7 @@ class StoreController extends Controller
 
         $filename = uniqid() . '.webp';
 
-        $image->contain(75,75)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
+        $image->contain(75, 75)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
 
         $image = '/storage/images/products/' . $filename;
 
@@ -47,8 +50,37 @@ class StoreController extends Controller
         return back();
     }
 
-    public function destroy(Store $store){
+    public function destroy(Store $store)
+    {
         $store->delete();
+        return back();
+    }
+
+    public function manageProducts(Store $store)
+    {
+        $notInIds = $store->products()->pluck('product_id')->toArray();
+
+        $availableProducts = Product::whereNotIn('id', $notInIds)->get();
+
+        return Inertia::render('ManageStoreProducts', [
+            'store' => $store,
+            'products' => $store->products()->get(),
+            'availableProducts' => $availableProducts,
+        ]);
+    }
+
+    public function addProduct(Request $request, Store $store, Product $product)
+    {
+        $request->validate([
+            'price' => 'required|numeric|min:0',
+        ]);
+        StoreProducts::create(['product_id' => $product->id, 'store_id' => $store->id, 'price' => $request->price]);
+        return back();
+    }
+
+    public function removeProduct(Store $store, Product $product)
+    {
+        $store->removeProduct($product);
         return back();
     }
 }

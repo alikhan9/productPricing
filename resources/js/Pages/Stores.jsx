@@ -19,6 +19,7 @@ export default function Stores({ stores }) {
                 <Typography>Logo</Typography>
                 <Typography>Ville</Typography>
                 <Typography>Adresse</Typography>
+                <Typography>Produits</Typography>
                 <Typography>Modifier</Typography>
                 <Typography>Supprimer</Typography>
             </Box>

@@ -38,7 +38,7 @@ const theme = createTheme({
             fontSize: "1.75rem",
             fontWeight: 600
         },
-        h1: {
+        h3: {
             fontSize: "1.5rem",
             fontWeight: 600
         },
@@ -58,6 +58,13 @@ const theme = createTheme({
                 }
             }
         },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    color: 'red'
+                }
+            }
+        }
     }
 });
 
