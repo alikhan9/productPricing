@@ -5,7 +5,7 @@ import { useSpring, animated } from '@react-spring/web'
 
 
 
-export default function Store({ store }) {
+export default function Store({ store, handleOpenEditStore }) {
 
     const [showDelete, setShowDelete] = useState(false);
 
@@ -53,7 +53,7 @@ export default function Store({ store }) {
                 <Button onClick={() => goToManageProducts()} variant='outlined' color='success'>Produits</Button>
             </Box>
             <Box>
-                <Button variant='outlined' color='info'>Modifier</Button>
+                <Button onClick={() => handleOpenEditStore(store)} variant='outlined' color='info'>Modifier</Button>
             </Box>
             <Box sx={{ position: 'relative' }}>
                 {showDelete ? <animated.div

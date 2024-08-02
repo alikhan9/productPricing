@@ -24,12 +24,13 @@ Route::middleware('auth')->group(function () {
     // products
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 
     // stores
     Route::get('/stores',[StoreController::class,'index'])->name('stores.index');
     Route::post('/stores',[StoreController::class,'store'])->name('stores.store');
     Route::delete('/stores/{store}',[StoreController::class,'destroy'])->name('stores.destroy');
+    Route::post('/stores/{store}',[StoreController::class,'update'])->name('stores.update');
     Route::get('/stores/{store}/products',[StoreController::class,'manageProducts'])->name('stores.products');
     Route::post('/stores/{store}/products/{product}',[StoreController::class,'addProduct'])->name('stores.products.store');
     Route::delete('/stores/{store}/products/{product}',[StoreController::class,'removeProduct'])->name('stores.products.destroy');

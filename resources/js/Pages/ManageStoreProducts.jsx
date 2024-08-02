@@ -1,16 +1,30 @@
 import { Box, Button, Input, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ManageProduct from './ManageStoreProducts/ManageProduct';
 import { router } from '@inertiajs/react';
 import HandleStoreProduct from './ManageStoreProducts/HandleStoreProduct';
+import { useDebounce } from 'use-debounce';
 
 export default function ManageStoreProducts({ store, products, storeProducts }) {
+
+
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 300);
 
     const handleChange = (valueStoreProducts) => {
         router.get(`/stores/${store.id}/products`, { storeProducts: valueStoreProducts ? 1 : 0 }, {
             preserveState: true
         });
     };
+
+    const getfilteredProducts = () => {
+        if (debouncedSearch[0] === '')
+            return products;
+        if (storeProducts)
+            return products.filter(p => p.product.name.toLowerCase().includes(debouncedSearch[0].toLowerCase()));
+        else
+            return products.filter(p => p.name.toLowerCase().includes(debouncedSearch[0].toLowerCase()));
+    }
 
 
 
@@ -32,23 +46,23 @@ export default function ManageStoreProducts({ store, products, storeProducts }) 
             </Box>
 
 
-            <TextField variant='filled' sx={{ float: 'right', my: 2, color: 'white' }} color='warning' size='small' label="Rechercher..."  />
-
-            <Box
-                component="form"
-                sx={{
-                    '& > :not(style)': { m: 1, width: '25ch' },
-                }}
-                noValidate
-                autoComplete="off"
-            >
-                <TextField label="Outlined secondary" color="secondary" focused disableUnderline />
-                <TextField label="Filled success" variant="filled" color="success" focused />
+            <Box component="form" noValidate>
                 <TextField
-                    label="Standard warning"
-                    variant="standard"
-                    color="warning"
-                    focused
+                    className='noSelect'
+                    variant='filled'
+                    onChange={(e) => setSearch(e.target.value)}
+                    sx={{
+                        float: 'right',
+                        my: 2,
+                        '& .MuiInputBase-input': {
+                            color: 'white', // Ensures the text color inside the TextField is white
+                        },
+                    }}
+                    InputLabelProps={{
+                        style: { color: 'white' },
+                    }}
+                    size='small'
+                    label="Rechercher..."
                 />
             </Box>
 
@@ -62,13 +76,13 @@ export default function ManageStoreProducts({ store, products, storeProducts }) 
             </Box>
             {!storeProducts ?
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    {products.map((p, index) => {
+                    {getfilteredProducts().map((p, index) => {
                         return <ManageProduct removeProductFromStore={removeProductFromStore} addProductToStore={addProductToStore} key={index} product={p} />
                     })}
                 </Box>
                 :
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    {products.map((p, index) => {
+                    {getfilteredProducts().map((p, index) => {
                         return <HandleStoreProduct removeProductFromStore={removeProductFromStore} key={index} storeProduct={p} />
                     })}
                 </Box>

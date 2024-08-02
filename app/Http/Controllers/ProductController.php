@@ -50,10 +50,10 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-//        dd($request);
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:6000',
+            'image' => 'required|string|max:255',
+            'newImage' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:4092',
         ], [
             'name.required' => 'Le nom est requis.',
             'name.string' => 'Le nom doit être une chaîne de caractères.',
@@ -62,19 +62,16 @@ class ProductController extends Controller
             'image.image' => 'Le fichier fourni n\'est pas une image valide.',
             'image.mimes' => "Veuillez fournir une image d'un type valide (jpeg, png, jpg, gif, svg).",
             'image.max' => 'L\'image ne peut pas dépasser :max kilo-octets.',
-
         ]);
 
-        if($data['image']){
-            File::delete(public_path(str_replace('/storage','app/public/',$product->image)));
+        if($data['newImage']){
+            File::delete(public_path($product->image));
             $manager = new ImageManager(new Driver());
-            $image = $manager->read($request->file('image'));
+            $image = $manager->read($request->file('newImage'));
             $filename = uniqid() . '.webp';
-            $image->scale(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
+            $image->contain(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
             $data['image'] = '/storage/images/products/' . $filename;
         }
-
-        $data['image'] = $data['image'] ?? $product->image;
         $product->update($data);
         return back();
     }

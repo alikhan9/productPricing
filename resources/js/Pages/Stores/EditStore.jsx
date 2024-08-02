@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InputError from '../../Components/InputError';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import PrimaryButton from '../../Components/PrimaryButton';
-import axios from 'axios';
+import { cities } from './Cities.js';
 
 
 
@@ -25,17 +25,17 @@ const style = {
     borderRadius: 2
 };
 
-export default function EditProduct({ product, open, handleClose }) {
+export default function EditStore({ store, open, handleClose }) {
 
-    const { data, setData, post, processing, errors, reset } = useForm({ id: product.id, name: product.name, image: null });
+    const { data, setData, post, processing, errors, reset } = useForm({ ...store });
 
     const [parent] = useAutoAnimate()
-    const [image, setImage] = useState();
+    const [image, setImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [shownCities, setShownCities] = useState(null);
 
     const submit = (e) => {
         e.preventDefault();
-
         if (image) {
             const formData = new FormData();
 
@@ -45,7 +45,7 @@ export default function EditProduct({ product, open, handleClose }) {
 
             formData.append('newImage', image);
 
-            router.post(`/products/${product.id}`, formData, {
+            router.post(`/stores/${store.id}`, formData, {
                 onSuccess: () => {
                     handleClose();
                 },
@@ -56,11 +56,24 @@ export default function EditProduct({ product, open, handleClose }) {
             });
             return;
         }
-
-        post(`/products/${product.id}`, {
+        post(`/stores/${store.id}`, {
             onSuccess: () => handleClose(),
         });
     };
+
+    const setCity = (city) => {
+        setData('city', city);
+        setShownCities(null);
+    }
+
+    const handleCities = (e) => {
+        const searchValue = e.target.value;
+        if (searchValue === '')
+            setShownCities(null)
+        else
+            setShownCities(cities.filter(c => c.includes(searchValue)));
+        setData('city', searchValue)
+    }
 
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -68,7 +81,7 @@ export default function EditProduct({ product, open, handleClose }) {
             // Create a local URL for the file
             let localUrl = URL.createObjectURL(img);
             // Update the state with the new file and the local URL for preview
-            setImage(e.target.files[0])
+            setImage(e.target.files[0]);
             setPreviewUrl(localUrl);
         }
     };
@@ -104,6 +117,42 @@ export default function EditProduct({ product, open, handleClose }) {
                             <InputError message={errors.name} className="mt-2" />
                         </div>
                         <div className="mt-4">
+                            <InputLabel htmlFor="city" value="Ville" />
+                            <Box sx={{ position: 'relative' }}>
+                                <TextInput
+                                    id="city"
+                                    type="text"
+                                    name="city"
+                                    value={data.city}
+                                    className="mt-1 block w-full relative"
+                                    autoComplete="city"
+                                    onChange={(e) => handleCities(e)}
+                                    required
+                                />
+                                {shownCities &&
+                                    <Box sx={{ position: 'absolute', bgcolor: 'tertiary.main', overflow: 'auto', width: '100%', mt: 2, maxHeight: 140, borderRadius: 2, zIndex: 10 }}>
+                                        {shownCities.map((city, index) => <Typography onClick={() => setCity(city)} sx={{ p: 1, ":hover": { cursor: 'pointer', bgcolor: 'tertiary.hover' } }} key={index}>{city}</Typography>)}
+                                    </Box>
+                                }
+                            </Box>
+                            <InputError message={errors.city} className="mt-2" />
+                        </div>
+                        <div className="mt-4">
+                            <InputLabel htmlFor="address" value="Adresse" />
+                            <TextInput
+                                id="address"
+                                type="text"
+                                name="address"
+                                value={data.address}
+                                className="mt-1 block w-full"
+                                autoComplete="address"
+                                onChange={(e) => setData('address', e.target.value)}
+                                required
+                            />
+
+                            <InputError message={errors.name} className="mt-2" />
+                        </div>
+                        <div className="mt-4">
                             <InputLabel htmlFor="image">Image</InputLabel>
                             <TextInput
                                 id="image"
@@ -115,7 +164,7 @@ export default function EditProduct({ product, open, handleClose }) {
                             />
                             <InputError message={errors.image} className="mt-2" />
                             <div className='flex justify-center mt-2'>
-                                <img className='max-w-[200px] max-h-[200px]' src={previewUrl ? previewUrl : product.image} alt="Preview" />
+                                <img className='max-w-[200px] max-h-[200px]' src={previewUrl ? previewUrl : store?.image} alt="Preview" />
                             </div>
                         </div>
                         <Box sx={{ display: 'flex', justifyContent: 'end', mt: 2 }}>

@@ -1,14 +1,31 @@
-import React from 'react'
+import React, { lazy, useState } from 'react'
 import CreateStore from './Stores/CreateStore';
 import { Box, Typography } from '@mui/material';
 import { Head } from '@inertiajs/react';
 import Store from './Stores/Store';
+import EditStore from './Stores/EditStore';
+
+// const EditStore = lazy(() => import('./Stores/EditStore'));
 
 export default function Stores({ stores }) {
+
+
+    const [storeToEdit, setStoreToEdit] = useState(null);
+    const [openEdit, setOpenEdit] = useState(false);
+
+    const handleOpenEditStore = (store) => {
+        setStoreToEdit({ ...store });
+        setOpenEdit(true)
+    };
+    const handleClose = () => setOpenEdit(false);
 
     return (
         <Box sx={{ py: 4, }}>
             <Head title="Magasin" />
+            {storeToEdit ?
+                <EditStore store={storeToEdit} open={openEdit} handleClose={handleClose} />
+                : null
+            }
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h1' sx={{ py: 2 }}>Magasins</Typography>
                 <CreateStore />
@@ -26,7 +43,7 @@ export default function Stores({ stores }) {
 
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 {stores.map((p, index) => {
-                    return <Store key={index} store={p} />
+                    return <Store key={index} handleOpenEditStore={handleOpenEditStore} store={p} />
                 })}
             </Box>
         </Box>

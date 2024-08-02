@@ -39,7 +39,6 @@ export default function CreateStore() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [shownCities, setShownCities] = useState(null);
-    const [cityLock, setCityLock] = useState(false);
 
     const [parent, enableAnimations] = useAutoAnimate()
     const [previewUrl, setPreviewUrl] = useState('');
@@ -82,7 +81,6 @@ export default function CreateStore() {
 
     const setCity = (city) => {
         setData('city', city);
-        setCityLock(true);
         setShownCities(null);
     }
 
