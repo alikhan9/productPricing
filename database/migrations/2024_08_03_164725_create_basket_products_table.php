@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('basket_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('basket_id')->constrained('baskets');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');;
             $table->float('quantity');
             $table->timestamps();
         });

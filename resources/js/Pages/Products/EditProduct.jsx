@@ -10,6 +10,7 @@ import InputError from '../../Components/InputError';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import PrimaryButton from '../../Components/PrimaryButton';
 import axios from 'axios';
+import { Button } from '@mui/material';
 
 
 
@@ -74,6 +75,15 @@ export default function EditProduct({ product, open, handleClose }) {
         }
     };
 
+    const deleteProduct = () => {
+        router.delete(`/products/${product.id}`, {
+            onSuccess: () => {
+                handleClose();
+                reset();
+            }
+        })
+    }
+
     return (
         <div ref={parent}>
             <Modal
@@ -113,13 +123,15 @@ export default function EditProduct({ product, open, handleClose }) {
                                 name="image"
                                 className="mt-1 block w-full"
                                 onChange={handleImageChange}
+                                capture
                             />
                             <InputError message={errors.image} className="mt-2" />
                             <div className='flex justify-center mt-2'>
                                 <img className='max-w-[200px] max-h-[200px]' src={previewUrl ? previewUrl : product.image} alt="Preview" />
                             </div>
                         </div>
-                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 2 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                            <Button onClick={() => deleteProduct()} color='error' variant='contained'>Supprimer</Button>
                             <PrimaryButton disabled={processing}>
                                 Valider
                             </PrimaryButton>

@@ -87,24 +87,33 @@ class BasketController extends Controller
 
     public function optimalPricing(Basket $basket)
     {
+        // Assuming $productIds contains the IDs you want to filter by
         $productIds = $basket->products()->pluck('product_id')->toArray();
 
-        $subQuery = DB::table('store_products')->whereIn('product_id', $productIds)
-            ->select('product_id', DB::raw('MIN(price) as min_price'))
-            ->groupBy('product_id');
+// Convert the array of product IDs to a string suitable for inclusion in the SQL query
+        $productIdInClause = implode(',', array_map(function ($id) {
+            return "'{$id}'"; // Wrap each ID in single quotes
+        }, $productIds));
 
-        $finalResult = DB::table('store_products')
-            ->joinSub($subQuery, 'lowest_prices', function ($join) {
-                $join->on('store_products.product_id', '=', 'lowest_prices.product_id')
-                    ->on('store_products.price', '=', 'lowest_prices.min_price');
-            })
-            ->join('products', 'store_products.product_id', '=', 'products.id')
-            ->join('stores', 'store_products.store_id', '=', 'stores.id') // Adjust 'store_id' column name based on your schema
-            ->select('products.*', 'stores.*', 'store_products.*')
-            ->get();
+// Construct the final SQL query with the IN clause for filtering by product IDs
+        $query = "SELECT sp.id FROM store_products sp JOIN (
+            SELECT product_id, MIN(price) AS min_price FROM store_products GROUP BY product_id
+          ) min_prices ON sp.product_id = min_prices.product_id AND sp.price = min_prices.min_price
+          WHERE sp.product_id IN ($productIdInClause)";
+
+// Execute the modified query
+        $IdsCheapestProduct = DB::select($query);
+
+        $arrayOfIdsCheapestProduct = [];
+        foreach ($IdsCheapestProduct as &$value) {
+            $arrayOfIdsCheapestProduct[] = $value->id;
+        }
+
+        $products = StoreProducts::whereIn('store_products.id', $arrayOfIdsCheapestProduct)->join('basket_products', 'store_products.product_id', '=', 'basket_products.product_id')->select('store_products.*','basket_products.*')->get();
+
 
         return Inertia::render('OptimalPricing', [
-            'products' => $finalResult,
+            'products' => $products,
         ]);
     }
 }

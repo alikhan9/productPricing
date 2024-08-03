@@ -39,7 +39,7 @@ class ProductController extends Controller
 
         $filename = uniqid() . '.webp';
 
-        $image->contain(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
+        $image->contain(100, 100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
 
         $image = '/storage/images/products/' . $filename;
 
@@ -64,15 +64,24 @@ class ProductController extends Controller
             'image.max' => 'L\'image ne peut pas dépasser :max kilo-octets.',
         ]);
 
-        if($data['newImage']){
+        if ($data['newImage']) {
             File::delete(public_path($product->image));
             $manager = new ImageManager(new Driver());
             $image = $manager->read($request->file('newImage'));
             $filename = uniqid() . '.webp';
-            $image->contain(100,100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
+            $image->contain(100, 100)->toWebp()->save(storage_path('app/public/images/products/' . $filename));
             $data['image'] = '/storage/images/products/' . $filename;
         }
         $product->update($data);
+        return back();
+    }
+
+    public function destroy(Product $product)
+    {
+        $imagePath = $product->image;
+        if ($product->delete())
+            File::delete(public_path($imagePath));
+
         return back();
     }
 }

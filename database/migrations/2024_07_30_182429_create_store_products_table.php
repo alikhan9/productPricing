@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('store_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_id')->constrained('stores');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
             $table->unique(['store_id', 'product_id']);
             $table->float('price');
             $table->timestamps();
