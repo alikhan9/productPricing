@@ -15,6 +15,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 import { usePage } from '@inertiajs/react';
 import { Container } from '@mui/material';
+import { AddShoppingCart } from '@mui/icons-material';
 
 
 export default function Authenticated({ children }) {
@@ -48,6 +49,7 @@ export default function Authenticated({ children }) {
                     <Box sx={{ display: 'flex', gap: 2 }}>
                         <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} />Magazins</NavLink>
                         <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} />Produits</NavLink>
+                        <NavLink href='/baskets' method='get'><AddShoppingCart sx={{ fontSize: 30 }} />Courses</NavLink>
                         <Button
                             id="basic-button"
                             aria-controls={open ? 'basic-menu' : undefined}

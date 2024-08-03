@@ -74,4 +74,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function baskets()
+    {
+        return $this->hasMany(Basket::class);
+    }
 }

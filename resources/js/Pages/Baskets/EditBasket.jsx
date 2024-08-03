@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextInput from '../../Components/TextInput';
 import InputLabel from '../../Components/InputLabel';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import CloseIcon from '@mui/icons-material/Close';
 import InputError from '../../Components/InputError';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import PrimaryButton from '../../Components/PrimaryButton';
-import axios from 'axios';
 
 
 
@@ -25,53 +24,18 @@ const style = {
     borderRadius: 2
 };
 
-export default function EditProduct({ product, open, handleClose }) {
+export default function EditBasket({ basket, open, handleClose }) {
 
-    const { data, setData, post, processing, errors, reset } = useForm({ id: product.id, name: product.name, image: null });
+    const { data, setData, put, processing, errors, reset } = useForm({ ...basket });
 
     const [parent] = useAutoAnimate()
-    const [image, setImage] = useState();
-    const [previewUrl, setPreviewUrl] = useState('');
+
 
     const submit = (e) => {
         e.preventDefault();
-
-        if (image) {
-            const formData = new FormData();
-
-            Object.entries(data).forEach(([key, value]) => {
-                formData.append(key, value);
-            });
-
-            formData.append('newImage', image);
-
-            router.post(`/products/${product.id}`, formData, {
-                onSuccess: () => {
-                    handleClose();
-                },
-                onError: error => {
-                    console.log(error);
-                    // setData('error', error);
-
-                }
-            });
-            return;
-        }
-
-        post(`/products/${product.id}`, {
+        put(`/baskets/${basket.id}`, {
             onSuccess: () => handleClose(),
         });
-    };
-
-    const handleImageChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            // Create a local URL for the file
-            let localUrl = URL.createObjectURL(img);
-            // Update the state with the new file and the local URL for preview
-            setImage(e.target.files[0])
-            setPreviewUrl(localUrl);
-        }
     };
 
     return (
@@ -103,21 +67,6 @@ export default function EditProduct({ product, open, handleClose }) {
                             />
 
                             <InputError message={errors.name} className="mt-2" />
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="image">Image</InputLabel>
-                            <TextInput
-                                id="image"
-                                multiple accept="image/*"
-                                type="file"
-                                name="image"
-                                className="mt-1 block w-full"
-                                onChange={handleImageChange}
-                            />
-                            <InputError message={errors.image} className="mt-2" />
-                            <div className='flex justify-center mt-2'>
-                                <img className='max-w-[200px] max-h-[200px]' src={previewUrl ? previewUrl : product.image} alt="Preview" />
-                            </div>
                         </div>
                         <Box sx={{ display: 'flex', justifyContent: 'end', mt: 2 }}>
                             <PrimaryButton disabled={processing}>

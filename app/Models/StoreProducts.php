@@ -13,6 +13,8 @@ class StoreProducts extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
+    protected $with = ['product','store'];
+
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
