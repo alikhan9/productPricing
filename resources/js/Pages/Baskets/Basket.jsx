@@ -48,7 +48,7 @@ export default function Basket({ basket, handleOpenEditBasket }) {
     }
 
     return (
-        <Box sx={{ width: '100%', display: 'flex', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 1, height: 120, justifyContent: 'center', alignItems: 'center', border: 1, borderColor: 'white', fontSize: { xs: 10, md: 16 }, textAlign:'center' } }}>
+        <Box sx={{ width: '100%', display: 'flex', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 1, height: 120, justifyContent: 'center', alignItems: 'center', border: 1, borderColor: 'white', fontSize: { xs: 10, md: 16 }, textAlign: 'center', wordBreak: "break-word" } }}>
             <Typography>{basket?.name}</Typography>
             <Box>
                 <Button size={matches ? 'small' : 'medium'} onClick={() => goToManageProducts()} variant='outlined' color='success'>Produits</Button>

@@ -19,11 +19,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '90%', md: 500 },
+    width: { xs: '100%', md: 500 },
+    height: '100%',
     bgcolor: 'secondary.main',
     border: 'none',
     p: 4,
-    borderRadius: 2
+    borderRadius: { md: 2 },
+    overflow: 'auto',
 };
 
 export default function CreateStore() {
@@ -89,10 +91,10 @@ export default function CreateStore() {
     return (
         <div ref={parent} className='overflow-auto my-4'>
             <Box onClick={handleOpen} sx={{
-                display: 'flex', overflow:'auto', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
+                display: 'flex', overflow: 'auto', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>
-                <Typography>Créer Produit</Typography>
-                <AddBoxIcon sx={{ fontSize: 40, color: 'white' }} />
+                <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>Créer Magazin</Typography>
+                <AddBoxIcon sx={{ fontSize: { xs: 30, md: 40 }, color: 'white' }} />
             </Box>
 
             <Modal

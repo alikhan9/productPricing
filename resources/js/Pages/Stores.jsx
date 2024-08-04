@@ -1,6 +1,6 @@
 import React, { lazy, useState } from 'react'
 import CreateStore from './Stores/CreateStore';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Head } from '@inertiajs/react';
 import Store from './Stores/Store';
 import EditStore from './Stores/EditStore';
@@ -12,6 +12,8 @@ export default function Stores({ stores }) {
 
     const [storeToEdit, setStoreToEdit] = useState(null);
     const [openEdit, setOpenEdit] = useState(false);
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleOpenEditStore = (store) => {
         setStoreToEdit({ ...store });
@@ -27,12 +29,12 @@ export default function Stores({ stores }) {
                 : null
             }
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant='h1' sx={{ py: 2 }}>Magasins</Typography>
+                <Typography variant={matches ? 'h5' : 'h1'} sx={{ py: 2 }}>Magasins</Typography>
                 <CreateStore />
             </Box>
 
             <Box sx={{ overflow: 'auto', width: '100%', bgcolor: 'tertiary.main', mt: 2 }}>
-                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 2, justifyContent: 'center', border: 1 } }}>
+                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', fontSize: { xs: 10, md: 16 }, p: 2, justifyContent: 'center', border: 1 } }}>
                     <Typography>Nom</Typography>
                     <Typography>Logo</Typography>
                     <Typography>Ville</Typography>

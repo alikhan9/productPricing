@@ -19,16 +19,18 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '90%', md: 500 },
+    width: { xs: '100%', md: 500 },
+    height: '100%',
     bgcolor: 'secondary.main',
     border: 'none',
     p: 4,
-    borderRadius: 2
+    borderRadius: { md: 2 },
+    overflow: 'auto',
 };
 
 export default function EditProduct({ product, open, handleClose }) {
 
-    const { data, setData, post, processing, errors, reset } = useForm({ id: product.id, name: product.name, image: null });
+    const { data, setData, post, processing, errors, reset } = useForm({ ...product });
 
     const [parent] = useAutoAnimate()
     const [image, setImage] = useState();

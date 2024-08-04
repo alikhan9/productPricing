@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { TextField } from '@mui/material';
+import { TextField, useMediaQuery, useTheme } from '@mui/material';
 import { useForm } from '@inertiajs/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -19,11 +19,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '90%', md: 500 },
+    width: { xs: '100%', md: 500 },
+    height: '100%',
     bgcolor: 'secondary.main',
     border: 'none',
     p: 4,
-    borderRadius: 2
+    borderRadius: { md: 2 },
+    overflow: 'auto',
 };
 
 export default function CreateProduct() {
@@ -36,6 +38,8 @@ export default function CreateProduct() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [parent, enableAnimations] = useAutoAnimate()
     const [previewUrl, setPreviewUrl] = useState('');
@@ -72,8 +76,8 @@ export default function CreateProduct() {
             <Box onClick={handleOpen} sx={{
                 display: 'flex', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>
-                <Typography>Créer Produit</Typography>
-                <AddBoxIcon sx={{ fontSize: 40, color: 'white' }} />
+                <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>Créer Produit</Typography>
+                <AddBoxIcon sx={{ fontSize: { xs: 30, md: 40 }, color: 'white' }} />
             </Box>
 
             <Modal

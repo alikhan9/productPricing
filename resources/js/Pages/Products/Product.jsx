@@ -40,8 +40,8 @@ export default function Product({ product }) {
                 <Box sx={{ height: 100 }}>
                     <img src={product.image} alt="image" />
                 </Box>
-                <Typography sx={{ textAlign: 'center', p: 1, fontSize: 10 }}>{product.name}</Typography>
-            </Box >
-        </div>
+                <Typography sx={{ textAlign: 'center', p: 1, fontSize: 10, wordBreak: "break-word" }}>{product.name}</Typography>
+        </Box >
+        </div >
     )
 }

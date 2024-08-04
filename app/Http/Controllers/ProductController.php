@@ -64,7 +64,7 @@ class ProductController extends Controller
             'image.max' => 'L\'image ne peut pas dépasser :max kilo-octets.',
         ]);
 
-        if ($data['newImage']) {
+        if ($request->hasFile('newImage')) {
             File::delete(public_path($product->image));
             $manager = new ImageManager(new Driver());
             $image = $manager->read($request->file('newImage'));

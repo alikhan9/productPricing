@@ -29,7 +29,7 @@ export default function Baskets({ baskets }) {
         : null
       }
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant={matches ? 'h3' : 'h1'} sx={{ py: 2 }}>Paniers</Typography>
+        <Typography variant={matches ? 'h5' : 'h1'} sx={{ py: 2 }}>Paniers</Typography>
         <CreateBasket />
       </Box>
 
