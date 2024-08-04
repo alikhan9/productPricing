@@ -39,7 +39,7 @@ export default function Authenticated({ children }) {
                         <NavLink href='/' method='get'>Home</NavLink>
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2 }}>
-                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} /><span className='hidden md:block'>Magazins</span></NavLink>
+                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} /><span className='hidden md:block'>Magasins</span></NavLink>
                         <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} /><span className='hidden md:block'>Produits</span></NavLink>
                         <NavLink href='/baskets' method='get'><AddShoppingCart sx={{ fontSize: 30 }} /><span className='hidden md:block'>Courses</span></NavLink>
                         <Button

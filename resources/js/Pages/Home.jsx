@@ -5,7 +5,9 @@ import { useDebounce } from 'use-debounce';
 
 export default function Home({ products }) {
     function groupBy(arr, property) {
-        return arr.reduce(function (memo, x) {
+        if (!arr)
+            return {};
+        return arr?.reduce(function (memo, x) {
             if (!memo[x[property]]) { memo[x[property]] = []; }
             memo[x[property]].push(x);
             return memo;
@@ -64,10 +66,10 @@ export default function Home({ products }) {
                                 {product.map((p, index2) => {
                                     return (
                                         <Box sx={{ width: '100%', display: 'flex', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 1, height: 120, justifyContent: 'center', alignItems: 'center', border: 1, borderColor: 'white', fontSize: { xs: 10, md: 16 }, textAlign: 'center', wordBreak: "break-word" } }} key={index2}>
-                                            <Typography>{p['store.name']}</Typography>
                                             <Box>
                                                 <img src={p['store.image']} alt="image" />
                                             </Box>
+                                            <Typography>{p['store.name']}</Typography>
                                             <Typography>{p['store.city']}</Typography>
                                             <Typography>{p['store.address']}</Typography>
                                             <Typography>{p['product.price']} €</Typography>

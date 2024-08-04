@@ -93,7 +93,7 @@ export default function CreateStore() {
             <Box onClick={handleOpen} sx={{
                 display: 'flex', overflow: 'auto', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>
-                <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>Créer Magazin</Typography>
+                <Typography sx={{ fontSize: { xs: 14, md: 20 } }}>Créer Magasin</Typography>
                 <AddBoxIcon sx={{ fontSize: { xs: 30, md: 40 }, color: 'white' }} />
             </Box>
 
