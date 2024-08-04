@@ -123,7 +123,6 @@ export default function Register() {
                             className="mt-1 block w-full"
                             onChange={handleImageChange}
                             required
-                            capture
                         />
                         <InputError message={errors.avatar} className="mt-2" />
                         {previewUrl && (
