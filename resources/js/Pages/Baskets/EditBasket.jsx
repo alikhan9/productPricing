@@ -18,7 +18,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: { xs: '100%', md: 500 },
-    height: '100%',
+    height: { xs: '100%', md: 'auto' },
     bgcolor: 'secondary.main',
     border: 'none',
     p: 4,

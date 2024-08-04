@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
@@ -18,9 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('/', function () {
-        return Inertia::render('Home');
-    })->name('home');
+    Route::get('/',[HomeController::class, 'index'])->name('home');
 
     // products
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -37,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/stores/{store}/products/{product}',[StoreController::class,'addProduct'])->name('stores.products.store');
     Route::delete('/stores/{store}/products/{product}',[StoreController::class,'removeProduct'])->name('stores.products.destroy');
 
+    // baskests
     Route::get('/baskets',[BasketController::class, 'index'])->name('baskets.index');
     Route::post('/baskets',[BasketController::class, 'store'])->name('baskets.store');
 

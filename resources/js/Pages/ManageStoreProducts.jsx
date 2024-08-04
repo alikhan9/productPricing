@@ -38,8 +38,13 @@ export default function ManageStoreProducts({ store, products, storeProducts }) 
         router.delete(`/stores/${store.id}/products/${productId}`);
     }
 
+    const goBack = () => {
+        router.get('/stores');
+    }
+
     return (
         <Box sx={{ mt: 2 }}>
+            <Button onClick={() => goBack()} variant='outlined' sx={{ my: 2, width:150 }} color='info'>Retour</Button>
             <Typography variant={matches ? 'h5' : 'h3'}>{store.name} / {store.city} / {store.address}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'end', gap: 1, mt: { xs: 2, sm: 0 } }}>

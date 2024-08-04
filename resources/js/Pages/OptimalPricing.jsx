@@ -1,4 +1,5 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { router } from '@inertiajs/react';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react'
 
 export default function OptimalPricing({ products }) {
@@ -22,9 +23,14 @@ export default function OptimalPricing({ products }) {
 
     }
 
+    const goBack = () => {
+        router.get('/baskets');
+    }
 
     return (
         <Box>
+            <Button onClick={() => goBack()} variant='outlined' sx={{ mt: 2, width: 150 }} color='info'>Retour</Button>
+
             {Object.entries(groupedData).map(([storeId, items]) => (
                 <Box sx={{ mt: 4 }} key={storeId}>
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'space-between', alignItems: 'center' }}>

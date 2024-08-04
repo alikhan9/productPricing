@@ -20,7 +20,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: { xs: '100%', md: 500 },
-    height: '100%',
+    height: {xs:'100%', md: 'auto'},
     bgcolor: 'secondary.main',
     border: 'none',
     p: 4,
@@ -89,7 +89,7 @@ export default function CreateStore() {
 
 
     return (
-        <div ref={parent} className='overflow-auto my-4'>
+        <div ref={parent}>
             <Box onClick={handleOpen} sx={{
                 display: 'flex', overflow: 'auto', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>

@@ -38,8 +38,13 @@ export default function ManageBasketProducts({ basket, products, basketProducts 
         router.delete(`/baskets/${basket.id}/products/${productId}`);
     }
 
+    const goBack = () => {
+        router.get('/baskets');
+    }
+
     return (
         <Box sx={{ mt: 2 }}>
+            <Button onClick={() => goBack()} variant='outlined' sx={{ my: 2, width: 150 }} color='info'>Retour</Button>
             <Typography variant={matches ? 'h5' : 'h3'}>{basket.name}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'end', gap: 1, mt: { xs: 2, sm: 0 } }}>
