@@ -38,6 +38,23 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10000',
+        ], [
+            'name.required' => 'Le champ Nom est obligatoire.',
+            'email.required' => 'Le champ Email est obligatoire.',
+            'email.string' => 'Le champ Email doit être une chaîne de caractères.',
+            'email.lowercase' => 'L\'Email doit être en minuscules.',
+            'email.email' => 'Le champ Email doit être un email valide.',
+            'email.max' => 'Le champ Email ne peut pas dépasser :max caractères.',
+            'email.unique' => 'L\'Email est déjà utilisé par un autre utilisateur.',
+            'password.required' => 'Le champ Mot de passe est obligatoire.',
+            'password.confirmed' => 'Les champs Mot de passe et Confirmation du mot de passe doivent correspondre.',
+            // Assuming Password::defaults() returns a closure that adds default password rules,
+            // we can't directly add custom messages here since they're part of the closure.
+            // You would typically handle this within the closure itself or by extending the rule.
+            'avatar.required' => 'Une image d\'avatar est requise.',
+            'avatar.image' => 'Le fichier doit être une image.',
+            'avatar.mimes' => 'Les types de fichiers autorisés sont jpeg, png, jpg, gif, svg, webp.',
+            'avatar.max' => 'La taille maximale de l\'image est de :max kilo-octets.',
         ]);
 
         $manager = new ImageManager(new Driver());
