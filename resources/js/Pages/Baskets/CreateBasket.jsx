@@ -10,6 +10,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 
 const style = {
@@ -34,6 +35,9 @@ export default function CreateBasket() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
     const [parent, enableAnimations] = useAutoAnimate()
 
 
@@ -53,8 +57,8 @@ export default function CreateBasket() {
             <Box onClick={handleOpen} sx={{
                 display: 'flex', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>
-                <Typography>Créer Produit</Typography>
-                <AddBoxIcon sx={{ fontSize: 40, color: 'white' }} />
+                <Typography sx={{ fontSize: { sm: 14, md: 20 } }}>Créer Produit</Typography>
+                <AddBoxIcon sx={{ fontSize: { sm: 30, md: 40 }, color: 'white' }} />
             </Box>
 
             <Modal
@@ -67,7 +71,7 @@ export default function CreateBasket() {
 
                     <Box sx={style}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant='h5'>Création d'un nouveau panier</Typography>
+                            <Typography variant={matches ? 'h5' : 'h3'}>Création d'un nouveau panier</Typography>
                             <CloseIcon onClick={handleClose} sx={{ fontSize: 25, color: 'red', border: 1, borderRadius: 1, ":hover": { cursor: 'pointer' } }} />
                         </Box>
                         <div className="mt-4">

@@ -12,7 +12,7 @@ const theme = createTheme({
     palette: {
         primary: {
             main: "hsl(222,40%,11%)",
-            button: 'hsl(211,89%,51%)'
+            button: 'hsl(211,89%,51%)',
         },
         secondary: {
             main: "hsl(222,40%,21%)",
@@ -42,6 +42,10 @@ const theme = createTheme({
             fontSize: "1.5rem",
             fontWeight: 600
         },
+        h5: {
+            fontSize: "1.25rem",
+            fontWeight: 500
+        },
     },
 
     components: {
@@ -55,13 +59,6 @@ const theme = createTheme({
                     },
                     paddingRight: 4,
                     paddingLeft: 4,
-                }
-            }
-        },
-        MuiTextField: {
-            styleOverrides: {
-                root: {
-                    color: 'red'
                 }
             }
         }
@@ -82,7 +79,7 @@ createInertiaApp({
         root.render(
             <ThemeProvider theme={theme}>
                 <App style={{ height: '100vh' }} {...props} />
-            </ThemeProvider>
+             </ThemeProvider>
         );
     },
     progress: {

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useForm } from '@inertiajs/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -87,9 +87,9 @@ export default function CreateStore() {
 
 
     return (
-        <div ref={parent}>
+        <div ref={parent} className='overflow-auto my-4'>
             <Box onClick={handleOpen} sx={{
-                display: 'flex', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
+                display: 'flex', overflow:'auto', alignItems: 'center', gap: 1, border: 1, borderRadius: 2, px: 2, py: 1, borderStyle: 'dashed', borderColor: 'secondary.main', ":hover": { bgcolor: 'tertiary.main', cursor: 'pointer', transform: 'scale(1.02)', transition: '0.1s' }
             }}>
                 <Typography>Créer Produit</Typography>
                 <AddBoxIcon sx={{ fontSize: 40, color: 'white' }} />
@@ -123,6 +123,7 @@ export default function CreateStore() {
 
                             <InputError message={errors.name} className="mt-2" />
                         </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="city" value="Ville" />
                             <Box sx={{ position: 'relative' }}>

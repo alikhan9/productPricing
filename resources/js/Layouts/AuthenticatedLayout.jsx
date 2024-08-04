@@ -14,8 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 import { usePage } from '@inertiajs/react';
-import { Container } from '@mui/material';
+import { CircularProgress, Container } from '@mui/material';
 import { AddShoppingCart } from '@mui/icons-material';
+import Backdrop from '@mui/material/Backdrop';
 
 
 export default function Authenticated({ children }) {
@@ -34,22 +35,13 @@ export default function Authenticated({ children }) {
         <Box sx={{ bgcolor: 'primary.main', height: '100vh', overflow: 'auto' }}>
             <AppBar position="relative">
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2, display: { md: 'none' } }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
                     <Typography variant="h6" component="div">
                         <NavLink href='/' method='get'>Home</NavLink>
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2 }}>
-                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} />Magazins</NavLink>
-                        <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} />Produits</NavLink>
-                        <NavLink href='/baskets' method='get'><AddShoppingCart sx={{ fontSize: 30 }} />Courses</NavLink>
+                        <NavLink href='/stores' method='get'><StoreMallDirectoryIcon sx={{ fontSize: 30 }} /><span className='hidden md:block'>Magazins</span></NavLink>
+                        <NavLink href='/products' method='get'><MenuBookIcon sx={{ fontSize: 30 }} /><span className='hidden md:block'>Produits</span></NavLink>
+                        <NavLink href='/baskets' method='get'><AddShoppingCart sx={{ fontSize: 30 }} /><span className='hidden md:block'>Courses</span></NavLink>
                         <Button
                             id="basic-button"
                             aria-controls={open ? 'basic-menu' : undefined}
@@ -65,6 +57,7 @@ export default function Authenticated({ children }) {
                         <Menu
                             id="basic-menu"
                             sx={{ transform: 'translate(-10px,10px)' }}
+
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
@@ -73,16 +66,16 @@ export default function Authenticated({ children }) {
                             }}
                         >
                             <MenuItem onClick={handleClose}>
-                                <NavLink onClick={handleClose} hover={false} href='/profile'><SettingsIcon />Settings</NavLink>
+                                <NavLink textBlack onClick={handleClose} hover={false} href='/profile'><SettingsIcon />Paramètres</NavLink>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
-                                <NavLink href='/logout' hover={false} method='post'><LogoutIcon />Logout</NavLink>
+                                <NavLink textBlack href='/logout' hover={false} method='post'><LogoutIcon />Déconnexion</NavLink>
                             </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Container sx={{ mb:5 }}>
+            <Container sx={{ mb: 5 }}>
                 {children}
             </Container>
         </Box>

@@ -46,7 +46,7 @@ export default function Register() {
             <div className='h-full w-full flex justify-center items-center'>
                 <form onSubmit={submit} className='md:w-[600px]'>
                     <div>
-                        <InputLabel htmlFor="name" value="Name" />
+                        <InputLabel htmlFor="name" value="Nom" />
 
                         <TextInput
                             id="name"
@@ -80,7 +80,7 @@ export default function Register() {
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="password" value="Password" />
+                        <InputLabel htmlFor="password" value="Mot de passe" />
 
                         <TextInput
                             id="password"
@@ -97,7 +97,7 @@ export default function Register() {
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                        <InputLabel htmlFor="password_confirmation" value="Confirmer mot de passe" />
 
                         <TextInput
                             id="password_confirmation"
@@ -119,9 +119,11 @@ export default function Register() {
                             id="avatar"
                             type="file"
                             name="avatar"
+                            accept="image/*"
                             className="mt-1 block w-full"
                             onChange={handleImageChange}
                             required
+                            capture
                         />
                         <InputError message={errors.avatar} className="mt-2" />
                         {previewUrl && (
@@ -134,11 +136,11 @@ export default function Register() {
                             href={route('login')}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
-                            Already registered?
+                            Déjà un compte?
                         </Link>
 
                         <PrimaryButton className="ms-4" disabled={processing}>
-                            Register
+                            Valider
                         </PrimaryButton>
                     </div>
                 </form>

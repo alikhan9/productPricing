@@ -23,8 +23,8 @@ export default function Guest({ children }) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         <NavLink href='/'>Home</NavLink>
                     </Typography>
-                    <NavLink href='/login'>Login</NavLink>
-                    <NavLink href='/register'>Register</NavLink>
+                    <NavLink href='/login'>Connexion</NavLink>
+                    <NavLink href='/register'>Créer Compte</NavLink>
                 </Toolbar>
             </AppBar>
             <Box sx={{ height: '100%' }}>

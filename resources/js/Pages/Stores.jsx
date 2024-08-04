@@ -20,7 +20,7 @@ export default function Stores({ stores }) {
     const handleClose = () => setOpenEdit(false);
 
     return (
-        <Box sx={{ py: 4, }}>
+        <Box sx={{ py: 4, overflow: 'none' }}>
             <Head title="Magasin" />
             {storeToEdit ?
                 <EditStore store={storeToEdit} open={openEdit} handleClose={handleClose} />
@@ -31,17 +31,16 @@ export default function Stores({ stores }) {
                 <CreateStore />
             </Box>
 
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', mt: 2, position: 'relative', bgcolor: 'tertiary.main', overflow: 'hidden', "&>*": { width: '100%', display: 'flex', p: 2, justifyContent: 'center', border: 1 } }}>
-                <Typography>Nom</Typography>
-                <Typography>Logo</Typography>
-                <Typography>Ville</Typography>
-                <Typography>Adresse</Typography>
-                <Typography>Produits</Typography>
-                <Typography>Modifier</Typography>
-                <Typography>Supprimer</Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ overflow: 'auto', width: '100%', bgcolor: 'tertiary.main', mt: 2 }}>
+                <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 2, justifyContent: 'center', border: 1 } }}>
+                    <Typography>Nom</Typography>
+                    <Typography>Logo</Typography>
+                    <Typography>Ville</Typography>
+                    <Typography>Adresse</Typography>
+                    <Typography>Produits</Typography>
+                    <Typography>Modifier</Typography>
+                    <Typography>Supprimer</Typography>
+                </Box>
                 {stores.map((p, index) => {
                     return <Store key={index} handleOpenEditStore={handleOpenEditStore} store={p} />
                 })}

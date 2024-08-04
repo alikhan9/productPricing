@@ -13,7 +13,7 @@ export default function Index({ products }) {
                 <CreateProduct />
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 2 }}>
                 {products.map((p, index) => {
                     return <Product key={index} product={p} />
                 })}
