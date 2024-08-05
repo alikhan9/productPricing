@@ -108,7 +108,6 @@ class BasketController extends Controller
     bp.quantity AS 'product.quantity'
 FROM
     products p
-        \n
         INNER JOIN (
         SELECT
             sp.product_id,
@@ -118,13 +117,10 @@ FROM
         GROUP BY
             sp.product_id
     ) min_prices ON p.id = min_prices.product_id
-        \n
         INNER JOIN
     store_products sp ON min_prices.product_id = sp.product_id AND min_prices.min_price = sp.price
-        \n
         INNER JOIN
     stores s ON sp.store_id = s.id
-        \n
         INNER JOIN (
         SELECT DISTINCT product_id, quantity
         FROM basket_products
