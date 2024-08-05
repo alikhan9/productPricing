@@ -95,25 +95,46 @@ class BasketController extends Controller
             return "'{$id}'"; // Wrap each ID in single quotes
         }, $productIds));
 
-// Construct the final SQL query with the IN clause for filtering by product IDs
-        $query = "SELECT sp.id FROM store_products sp JOIN (
-            SELECT product_id, MIN(price) AS min_price FROM store_products GROUP BY product_id
-          ) min_prices ON sp.product_id = min_prices.product_id AND sp.price = min_prices.min_price
-          WHERE sp.product_id IN ($productIdInClause)";
-
-// Execute the modified query
-        $IdsCheapestProduct = DB::select($query);
-
-        $arrayOfIdsCheapestProduct = [];
-        foreach ($IdsCheapestProduct as &$value) {
-            $arrayOfIdsCheapestProduct[] = $value->id;
-        }
-
-        $products = StoreProducts::whereIn('store_products.id', $arrayOfIdsCheapestProduct)->join('basket_products', 'store_products.product_id', '=', 'basket_products.product_id')->select('store_products.*','basket_products.*')->get();
+        $query = "SELECT
+    p.id AS 'product.id',
+    p.image AS 'product.image',
+    p.name AS 'product.name',
+    s.id AS 'store.id',
+    sp.price AS 'product.price',
+    s.name AS 'store.name',
+    s.image AS 'store.image',
+    s.address AS 'store.address',
+    s.city AS 'store.city',
+    bp.quantity AS 'product.quantity'
+FROM
+    products p
+        \n
+        INNER JOIN (
+        SELECT
+            sp.product_id,
+            MIN(sp.price) AS min_price
+        FROM
+            store_products sp
+        GROUP BY
+            sp.product_id
+    ) min_prices ON p.id = min_prices.product_id
+        \n
+        INNER JOIN
+    store_products sp ON min_prices.product_id = sp.product_id AND min_prices.min_price = sp.price
+        \n
+        INNER JOIN
+    stores s ON sp.store_id = s.id
+        INNER JOIN (
+        SELECT DISTINCT product_id, quantity
+        FROM basket_products
+        WHERE basket_id = 2
+    ) bp ON p.id = bp.product_id
+        WHERE p.id IN ($productIdInClause)
+        ORDER BY s.id, sp.price";
 
 
         return Inertia::render('OptimalPricing', [
-            'products' => $products,
+            'products' => DB::select($query),
         ]);
     }
 }

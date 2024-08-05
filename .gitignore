@@ -5,7 +5,6 @@
 /public/storage
 /storage/*.key
 /vendor
-/resources/views/app.blade.php
 .env
 .env.backup
 .env.production
@@ -19,3 +18,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+app.blade.php
+/resources/views/app.blade.php
