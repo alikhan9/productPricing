@@ -124,14 +124,14 @@ FROM
         INNER JOIN (
         SELECT DISTINCT product_id, quantity
         FROM basket_products
-        WHERE basket_id = 2
+        WHERE basket_id = ($basket->id)
     ) bp ON p.id = bp.product_id
         WHERE p.id IN ($productIdInClause)
         ORDER BY s.id, sp.price";
-
+        $products = DB::select($query);
 
         return Inertia::render('OptimalPricing', [
-            'products' => DB::select($query),
+            'products' =>  $products
         ]);
     }
 }

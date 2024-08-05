@@ -92,7 +92,7 @@ export default function OptimalPricing({ products }) {
                     </Box>
                 </Box>
             ))
-            };
+            }
         </Box >
     )
 }
