@@ -124,6 +124,7 @@ FROM
         \n
         INNER JOIN
     stores s ON sp.store_id = s.id
+        \n
         INNER JOIN (
         SELECT DISTINCT product_id, quantity
         FROM basket_products
