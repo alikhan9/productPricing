@@ -43,10 +43,6 @@ export default function Basket({ basket, handleOpenEditBasket }) {
         router.get(`/baskets/${basket.id}/products`)
     }
 
-    const generateOptimalPricing = () => {
-        router.get(`/baskets/${basket.id}/optimal-pricing`)
-    }
-
     return (
         <Box sx={{ width: '100%', display: 'flex', position: 'relative', bgcolor: 'tertiary.main', "&>*": { width: '100%', minWidth: 120, display: 'flex', p: 1, height: 120, justifyContent: 'center', alignItems: 'center', border: 1, borderColor: 'white', fontSize: { xs: 10, md: 16 }, textAlign: 'center', wordBreak: "break-word" } }}>
             <Typography>{basket?.name}</Typography>
@@ -54,7 +50,7 @@ export default function Basket({ basket, handleOpenEditBasket }) {
                 <Button size={matches ? 'small' : 'medium'} onClick={() => goToManageProducts()} variant='outlined' color='success'>Produits</Button>
             </Box>
             <Box>
-                <Button size={matches ? 'small' : 'medium'} onClick={() => generateOptimalPricing()} variant='outlined' color='error'>Générer</Button>
+                <Button size={matches ? 'small' : 'medium'} onClick={() => handleOpenCreateOptimalBasket(basket)} variant='outlined' color='error'>Générer</Button>
             </Box>
             <Box>
                 <Button size={matches ? 'small' : 'medium'} onClick={() => handleOpenEditBasket(basket)} variant='outlined' color='info'>Modifier</Button>

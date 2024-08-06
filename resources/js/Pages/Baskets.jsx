@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/react';
 import CreateBasket from './Baskets/CreateBasket';
 import Basket from './Baskets/Basket';
 import EditBasket from './Baskets/EditBasket';
+import CreateOptimalBasket from './Baskets/CreateOptimalBasket';
 
 
 export default function Baskets({ baskets }) {
@@ -12,6 +13,7 @@ export default function Baskets({ baskets }) {
 
   const [basketToEdit, setBasketToEdit] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openOptimal, setOpenOptimal] = useState(false);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -19,6 +21,15 @@ export default function Baskets({ baskets }) {
     setBasketToEdit({ ...basket });
     setOpenEdit(true)
   };
+
+  const handleOpenCreateOptimalBasket = (basket) => {
+    setBasketToEdit({ ...basket });
+    setOpenOptimal(true);
+  }
+
+  const closeCreateOptimal = () => {
+    setOpenOptimal(false);
+  }
   const handleClose = () => setOpenEdit(false);
 
   return (
@@ -28,6 +39,7 @@ export default function Baskets({ baskets }) {
         <EditBasket basket={basketToEdit} open={openEdit} handleClose={handleClose} />
         : null
       }
+      <CreateOptimalBasket open={openOptimal} handleClose={closeCreateOptimal} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant={matches ? 'h5' : 'h1'} sx={{ py: 2 }}>Paniers</Typography>
         <CreateBasket />
@@ -43,7 +55,7 @@ export default function Baskets({ baskets }) {
           <Typography>Supprimer</Typography>
         </Box>
         {baskets.map((b, index) => {
-          return <Basket key={index} handleOpenEditBasket={handleOpenEditBasket} basket={b} />
+          return <Basket key={index} handleOpenCreateOptimalBasket={handleOpenCreateOptimalBasket} handleOpenEditBasket={handleOpenEditBasket} basket={b} />
         })}
       </Box>
 
