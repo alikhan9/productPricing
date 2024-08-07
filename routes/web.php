@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
     // stores
     Route::get('/stores',[StoreController::class,'index'])->name('stores.index');
+    Route::get('/stores/get',[StoreController::class,'getStores'])->name('stores.get');
     Route::post('/stores',[StoreController::class,'store'])->name('stores.store');
     Route::delete('/stores/{store}',[StoreController::class,'destroy'])->name('stores.destroy');
     Route::post('/stores/{store}',[StoreController::class,'update'])->name('stores.update');

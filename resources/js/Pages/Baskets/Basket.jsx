@@ -5,7 +5,7 @@ import { useSpring, animated } from '@react-spring/web'
 
 
 
-export default function Basket({ basket, handleOpenEditBasket }) {
+export default function Basket({ basket, handleOpenEditBasket, handleOpenCreateOptimalBasket }) {
 
     const [showDelete, setShowDelete] = useState(false);
     const theme = useTheme();

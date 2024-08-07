@@ -125,4 +125,9 @@ class StoreController extends Controller
         $store->removeProduct($product);
         return back();
     }
+
+    public function getStores() {
+
+        return Store::select(['id', 'name'])->get();
+    }
 }

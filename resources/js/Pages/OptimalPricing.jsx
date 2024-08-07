@@ -7,6 +7,7 @@ export default function OptimalPricing({ products }) {
 
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
+    
 
 
     function groupBy(arr, property) {
