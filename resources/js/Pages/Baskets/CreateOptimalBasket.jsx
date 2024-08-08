@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import TextInput from '@/Components/TextInput';
@@ -26,65 +26,54 @@ const style = {
     overflow: 'auto',
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
 
 export default function CreateOptimalBasket({ basket, handleOpen, handleClose, open }) {
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+
+    const { get, processing } = useForm({
         name: '',
     });
-
 
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [parent, enableAnimations] = useAutoAnimate();
-    const [shops, setShops] = useState([]);
+    const [shops, setShops] = useState(null);
 
-    const [personName, setPersonName] = useState([]);
+    const [selectedShops, setSelectedShops] = useState([]);
+    const [selectedShopsIds, setSelectedShopsIds] = useState([]);
 
     const handleChange = (event) => {
         const {
             target: { value },
         } = event;
-        setPersonName(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
+
+        // Split the value into an array of names
+        const namesArray = typeof value === 'string' ? value.split(',') : value;
+
+        // Find the corresponding shop objects in the shops array and extract their IDs
+        const selectedShopsObjects = namesArray.map((name) =>
+            shops.find((shop) => shop.name === name)
         );
+
+        // Extract the IDs from the found shop objects
+        const selectedShopsIds = selectedShopsObjects.map(shopObject => shopObject.id);
+
+        // Optionally, keep track of the names as well
+        const selectedShopsNames = namesArray;
+
+        // Set the state with both names and IDs
+        setSelectedShops(selectedShopsNames); // Assuming this was meant to hold names
+        setSelectedShopsIds(selectedShopsIds); // New state variable for holding IDs
     };
 
+    useEffect(() => {
+        getShops();
+    }, [basket])
 
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('baskets.store'), {
-            onSuccess: () => {
-                handleClose();
-                reset();
-            },
-        });
+        router.get(`/baskets/${basket.id}/optimal-pricing`, { ids: selectedShopsIds })
     };
 
     const generateOptimalPricing = () => {
@@ -93,12 +82,9 @@ export default function CreateOptimalBasket({ basket, handleOpen, handleClose, o
 
     const getShops = () => {
         axios.get('/stores/get').then(response => {
-            console.log(response);
-            
             setShops(response.data);
         });
 
-        return shops;
     }
 
     const MenuProps = {
@@ -110,7 +96,7 @@ export default function CreateOptimalBasket({ basket, handleOpen, handleClose, o
                 '.MuiCheckbox-root': {
                     color: 'white',
                 },
-                color: 'white'
+                color: 'white',
             },
         },
     };
@@ -131,7 +117,7 @@ export default function CreateOptimalBasket({ basket, handleOpen, handleClose, o
                             <Typography variant={matches ? 'h5' : 'h3'}>Paramètres pour la génération</Typography>
                             <CloseIcon onClick={handleClose} sx={{ fontSize: 25, color: 'red', border: 1, borderRadius: 1, ":hover": { cursor: 'pointer' } }} />
                         </Box>
-                        <FormControl sx={{ m: 1, width: 300 }}>
+                        <FormControl sx={{ my: 2, width: '100%' }}>
                             <InputLabel sx={{
                                 color: 'white', '&.Mui-focused': {
                                     color: 'white', // Change color to white when focused/minimized
@@ -141,7 +127,7 @@ export default function CreateOptimalBasket({ basket, handleOpen, handleClose, o
                                 labelId="demo-multiple-checkbox-label"
                                 id="demo-multiple-checkbox"
                                 multiple
-                                value={personName}
+                                value={selectedShops}
                                 onChange={handleChange}
                                 input={
                                     <OutlinedInput
@@ -154,18 +140,21 @@ export default function CreateOptimalBasket({ basket, handleOpen, handleClose, o
                                 renderValue={(selected) => selected.join(', ')}
                                 MenuProps={MenuProps}
                             >
-                                {getShops()?.map((store, index) => (
+                                {shops && shops.map((store, index) => (
                                     <MenuItem key={index} value={store.name}>
                                         <Checkbox
-                                            checked={personName.indexOf(name) > -1}
+                                            checked={selectedShops.indexOf(store.id) > -1}
                                             sx={{
                                                 color: 'white', // Changes the color of the checkbox itself
                                                 '&.Mui-checked': {
                                                     color: 'white', // Ensures the checked state also uses white color
+                                                    ":focus": {
+                                                        color: 'white'
+                                                    }
                                                 },
                                             }}
                                         />
-                                        <ListItemText primary={name} />
+                                        <ListItemText primary={store.name} />
                                     </MenuItem>
                                 ))}
                             </Select>

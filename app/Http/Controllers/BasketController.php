@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Basket;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\StoreProducts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -85,8 +86,17 @@ class BasketController extends Controller
         return back();
     }
 
-    public function optimalPricing(Basket $basket)
+    public function optimalPricing(Request $request, Basket $basket)
     {
+
+        $stores = null;
+        if ($request->query('ids')) {
+            $stores = Store::whereIn('id', $request->query('ids'))->pluck('id')->toArray();
+            if (count($stores) !== count($request->query('ids'))) {
+                abort(403, 'Les données ne correspondent pas');
+            }
+        }
+
         // Assuming $productIds contains the IDs you want to filter by
         $productIds = $basket->products()->pluck('product_id')->toArray();
 
@@ -95,43 +105,51 @@ class BasketController extends Controller
             return "'{$id}'"; // Wrap each ID in single quotes
         }, $productIds));
 
-        $query = "SELECT
-    p.id AS 'product.id',
-    p.image AS 'product.image',
-    p.name AS 'product.name',
-    s.id AS 'store.id',
-    sp.price AS 'product.price',
-    s.name AS 'store.name',
-    s.image AS 'store.image',
-    s.address AS 'store.address',
-    s.city AS 'store.city',
-    bp.quantity AS 'product.quantity'
-FROM
-    products p
+        $query = "
+    SELECT
+        p.id AS 'product.id',
+        p.image AS 'product.image',
+        p.name AS 'product.name',
+        s.id AS 'store.id',
+        sp.price AS 'product.price',
+        s.name AS 'store.name',
+        s.image AS 'store.image',
+        s.address AS 'store.address',
+        s.city AS 'store.city',
+        bp.quantity AS 'product.quantity'
+    FROM
+        products p
         INNER JOIN (
-        SELECT
-            sp.product_id,
-            MIN(sp.price) AS min_price
-        FROM
-            store_products sp
-        GROUP BY
-            sp.product_id
-    ) min_prices ON p.id = min_prices.product_id
+            SELECT
+                sp.product_id,
+                MIN(sp.price) AS min_price
+            FROM
+                store_products sp
+            GROUP BY
+                sp.product_id
+        ) min_prices ON p.id = min_prices.product_id
         INNER JOIN
-    store_products sp ON min_prices.product_id = sp.product_id AND min_prices.min_price = sp.price
+        store_products sp ON min_prices.product_id = sp.product_id AND min_prices.min_price = sp.price
         INNER JOIN
-    stores s ON sp.store_id = s.id
+        stores s ON sp.store_id = s.id
         INNER JOIN (
-        SELECT DISTINCT product_id, quantity
-        FROM basket_products
-        WHERE basket_id = ($basket->id)
-    ) bp ON p.id = bp.product_id
-        WHERE p.id IN ($productIdInClause)
-        ORDER BY s.id, sp.price";
+            SELECT DISTINCT product_id, quantity
+            FROM basket_products
+            WHERE basket_id = ($basket->id)
+        ) bp ON p.id = bp.product_id
+        WHERE p.id IN ($productIdInClause)";
+
+        if (!is_null($stores)) {
+            // Add the condition for stores where id in ($stores) if $stores is not null
+            $query .= " AND s.id IN (" . implode(',', array_map('intval', $stores)) . ")";
+        }
+
+        $query .= "ORDER BY s.id, sp.price";
+
         $products = DB::select($query);
 
         return Inertia::render('OptimalPricing', [
-            'products' =>  $products
+            'products' => $products
         ]);
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Head } from '@inertiajs/react';
 import CreateBasket from './Baskets/CreateBasket';
@@ -17,13 +17,14 @@ export default function Baskets({ baskets }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
+
   const handleOpenEditBasket = (basket) => {
     setBasketToEdit({ ...basket });
     setOpenEdit(true)
   };
 
   const handleOpenCreateOptimalBasket = (basket) => {
-    setBasketToEdit({ ...basket });
+    setBasketToEdit({ ...basket });    
     setOpenOptimal(true);
   }
 
@@ -39,7 +40,7 @@ export default function Baskets({ baskets }) {
         <EditBasket basket={basketToEdit} open={openEdit} handleClose={handleClose} />
         : null
       }
-      <CreateOptimalBasket open={openOptimal} handleClose={closeCreateOptimal} />
+      <CreateOptimalBasket open={openOptimal}  basket={basketToEdit} handleClose={closeCreateOptimal} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant={matches ? 'h5' : 'h1'} sx={{ py: 2 }}>Paniers</Typography>
         <CreateBasket />
