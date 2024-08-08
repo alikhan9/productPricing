@@ -100,6 +100,9 @@ class BasketController extends Controller
         // Assuming $productIds contains the IDs you want to filter by
         $productIds = $basket->products()->pluck('product_id')->toArray();
 
+        if(count($productIds) === 0)
+            abort(403, "Ce panier contient aucun produit.");
+
 // Convert the array of product IDs to a string suitable for inclusion in the SQL query
         $productIdInClause = implode(',', array_map(function ($id) {
             return "'{$id}'"; // Wrap each ID in single quotes
